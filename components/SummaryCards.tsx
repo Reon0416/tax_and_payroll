@@ -13,11 +13,11 @@ export default function SummaryCards({ result }: { result: SimulationResult }) {
   ];
 
   return (
-    <section className="rounded-lg bg-white p-4 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur">
       <h2 className="mb-3 text-lg font-semibold">結果サマリー</h2>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {items.map(([label, value]) => (
-          <div key={label} className="rounded-md border border-slate-200 p-3">
+          <div key={label} className="rounded-xl border border-slate-200 bg-slate-50/70 p-3">
             <div className="text-xs text-slate-500">{label}</div>
             <div className="text-sm font-semibold md:text-base">{value}</div>
           </div>

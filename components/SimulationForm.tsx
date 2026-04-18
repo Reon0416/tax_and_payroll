@@ -35,7 +35,7 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
   const mode = watch("mode");
 
   return (
-    <section className="rounded-lg bg-white p-4 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur">
       <h2 className="mb-3 text-lg font-semibold">入力フォーム</h2>
       <div className="grid gap-3 md:grid-cols-2">
         <label className="flex flex-col gap-1">

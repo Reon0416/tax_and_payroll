@@ -7,11 +7,17 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900;
+  @apply bg-slate-50 text-slate-900 antialiased;
 }
 
 input,
 select,
 button {
-  @apply rounded-md border border-slate-300 px-3 py-2;
+  @apply rounded-lg border border-slate-300 px-3 py-2 transition;
+}
+
+input:focus,
+select:focus,
+button:focus {
+  @apply outline-none ring-2 ring-indigo-200;
 }

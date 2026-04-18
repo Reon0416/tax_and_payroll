@@ -17,7 +17,7 @@ export default function ResultChart({ cases, results }: Props) {
   }));
 
   return (
-    <section className="h-[340px] rounded-lg bg-white p-4 shadow-sm">
+    <section className="h-[360px] rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur">
       <h2 className="mb-3 text-lg font-semibold">グラフ（年額比較）</h2>
       <ResponsiveContainer width="100%" height="85%">
         <BarChart data={data}>

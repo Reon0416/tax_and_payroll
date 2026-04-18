@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import ComparisonTable from "@/components/ComparisonTable";
-import DeductionTable from "@/components/DeductionTable";
 import ResultChart from "@/components/ResultChart";
 import SimulationForm from "@/components/SimulationForm";
 import SummaryCards from "@/components/SummaryCards";
@@ -68,45 +67,46 @@ export default function HomePage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-4 p-4 md:p-6">
-      <header className="rounded-lg bg-white p-4 shadow-sm">
-        <h1 className="text-2xl font-bold">日本の給与手取りシミュレーター（概算）</h1>
-        <p className="mt-2 text-sm text-slate-700">
-          年収・月収・賞与などの条件を変更し、年間手取りと控除内訳を比較できます。対象年度: {TARGET_FISCAL_YEAR}年度。
-        </p>
-      </header>
+    <main className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-white">
+      <div className="mx-auto max-w-6xl space-y-4 p-4 md:p-6">
+        <header className="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm backdrop-blur">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">日本の給与手取りシミュレーター（概算）</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            年収・月収・賞与などの条件を変更し、年間手取りを比較できます。対象年度: {TARGET_FISCAL_YEAR}年度。
+          </p>
+        </header>
 
-      <section className="rounded-lg bg-blue-50 p-4 text-sm text-blue-900">
-        <h2 className="mb-2 text-base font-semibold">前提説明</h2>
-        <ul className="list-disc space-y-1 pl-5">
-          <li>会社員・公務員（会社員モデル）向けです。</li>
-          <li>住民税は前年所得を使わない簡易推定です。</li>
-          <li>通勤手当は非課税として扱います。</li>
-          <li>制度改定に備え、税率・料率は設定ファイル分離しています。</li>
-        </ul>
-      </section>
+        <section className="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4 text-sm text-indigo-900">
+          <h2 className="mb-2 text-base font-semibold">前提説明</h2>
+          <ul className="list-disc space-y-1 pl-5">
+            <li>会社員・公務員（会社員モデル）向けです。</li>
+            <li>住民税は前年所得を使わない簡易推定です。</li>
+            <li>通勤手当は非課税として扱います。</li>
+            <li>制度改定に備え、税率・料率は設定ファイル分離しています。</li>
+          </ul>
+        </section>
 
-      <SimulationForm activeCase={activeCase} onChange={updateActiveCase} />
-      <SummaryCards result={activeResult} />
-      <DeductionTable result={activeResult} />
-      <ComparisonTable
-        cases={cases}
-        results={results}
-        activeId={activeId}
-        onActivate={setActiveId}
-        onDuplicate={duplicateCase}
-        onRename={renameCase}
-      />
-      <ResultChart cases={cases} results={results} />
+        <SimulationForm activeCase={activeCase} onChange={updateActiveCase} />
+        <SummaryCards result={activeResult} />
+        <ComparisonTable
+          cases={cases}
+          results={results}
+          activeId={activeId}
+          onActivate={setActiveId}
+          onDuplicate={duplicateCase}
+          onRename={renameCase}
+        />
+        <ResultChart cases={cases} results={results} />
 
-      <section className="rounded-lg bg-amber-50 p-4 text-sm text-amber-900">
-        <h2 className="mb-2 text-base font-semibold">注意事項（必読）</h2>
-        <ul className="list-disc space-y-1 pl-5">
-          {activeResult.notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-      </section>
+        <section className="rounded-2xl border border-amber-200 bg-amber-50/90 p-4 text-sm text-amber-900">
+          <h2 className="mb-2 text-base font-semibold">注意事項（必読）</h2>
+          <ul className="list-disc space-y-1 pl-5">
+            {activeResult.notes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </main>
   );
 }
