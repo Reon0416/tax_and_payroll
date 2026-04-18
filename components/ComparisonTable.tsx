@@ -27,7 +27,7 @@ export default function ComparisonTable({ cases, results, activeId, onActivate, 
               <th className="py-2">年間手取り</th>
               <th className="py-2">差分</th>
               <th className="py-2">増減率</th>
-              <th className="py-2">手取り率</th>
+              <th className="py-2">控除率</th>
               <th className="py-2">操作</th>
             </tr>
           </thead>
@@ -49,7 +49,7 @@ export default function ComparisonTable({ cases, results, activeId, onActivate, 
                   <td className="font-medium text-slate-900">{formatYen(result.annualTakeHome)}</td>
                   <td className={diff >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatYen(diff)}</td>
                   <td className={diff >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatPercent(diffRate)}</td>
-                  <td>{formatPercent(result.takeHomeRate)}</td>
+                  <td>{formatPercent(1 - result.takeHomeRate)}</td>
                   <td className="space-x-2">
                     <button
                       type="button"
