@@ -1,16 +1,6 @@
 import type { SimulationCase, SimulationResult } from "@/lib/types";
 import { formatPercent, formatYen } from "./Currency";
 
-const resolveMonthlySalary = (caseItem: SimulationCase): number => {
-  if (caseItem.input.mode === "monthlyPlusBonus") {
-    return caseItem.input.monthlyBaseSalary ?? 0;
-  }
-  if (caseItem.input.mode === "monthlyIncome") {
-    return caseItem.input.monthlyIncome ?? 0;
-  }
-  return Math.round((caseItem.input.annualIncome ?? 0) / 12);
-};
-
 type Props = {
   cases: SimulationCase[];
   results: Record<string, SimulationResult>;
@@ -33,7 +23,7 @@ export default function ComparisonTable({ cases, results, activeId, onActivate, 
           <thead>
             <tr className="border-b border-slate-200 text-left text-slate-600">
               <th className="py-2">ケース</th>
-              <th className="py-2">月給</th>
+              <th className="py-2">月の手取り</th>
               <th className="py-2">年間手取り</th>
               <th className="py-2">差分</th>
               <th className="py-2">増減率</th>
@@ -55,7 +45,7 @@ export default function ComparisonTable({ cases, results, activeId, onActivate, 
                       className={activeId === caseItem.id ? "border-indigo-400 bg-indigo-50/50" : ""}
                     />
                   </td>
-                  <td>{formatYen(resolveMonthlySalary(caseItem))}</td>
+                  <td>{formatYen(result.monthlyTakeHome)}</td>
                   <td className="font-medium text-slate-900">{formatYen(result.annualTakeHome)}</td>
                   <td className={diff >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatYen(diff)}</td>
                   <td className={diff >= 0 ? "text-emerald-600" : "text-rose-600"}>{formatPercent(diffRate)}</td>
