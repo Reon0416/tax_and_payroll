@@ -1,12 +1,9 @@
-export type InputMode = "annualIncome" | "monthlyIncome" | "monthlyPlusBonus";
+export type InputMode = "annualIncome" | "monthlyIncome";
 
 export type SimulationInput = {
   mode: InputMode;
   annualIncome?: number;
   monthlyIncome?: number;
-  monthlyBaseSalary?: number;
-  bonusAmount?: number;
-  bonusCount?: number;
   prefecture: string;
   age: number;
   dependents: number;
@@ -39,7 +36,6 @@ export type SimulationResult = {
   annualTakeHome: number;
   monthlyGross: number;
   monthlyTakeHome: number;
-  bonusTakeHome: number;
   takeHomeRate: number;
   deductionRate: number;
   gapFromGross: number;

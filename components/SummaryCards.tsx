@@ -7,7 +7,6 @@ export default function SummaryCards({ result }: { result: SimulationResult }) {
     ["年間手取り", formatYen(result.annualTakeHome)],
     ["月間額面", formatYen(result.monthlyGross)],
     ["月間手取り", formatYen(result.monthlyTakeHome)],
-    ["賞与手取り（概算）", formatYen(result.bonusTakeHome)],
     ["額面との差額", formatYen(result.gapFromGross)],
     ["税・社会保険の控除率", formatPercent(result.deductionRate)],
   ];

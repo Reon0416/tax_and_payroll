@@ -47,7 +47,6 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
               <select {...field}>
                 <option value="annualIncome">年収から入力</option>
                 <option value="monthlyIncome">月収から入力</option>
-                <option value="monthlyPlusBonus">月給＋賞与から入力</option>
               </select>
             )}
           />
@@ -88,35 +87,6 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
           </label>
         )}
 
-        {mode === "monthlyPlusBonus" && (
-          <>
-            <label className="flex flex-col gap-1">
-              月給（円）
-              <Controller
-                name="monthlyBaseSalary"
-                control={control}
-                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
-              />
-              <p className="text-xs text-red-600">{formState.errors.monthlyBaseSalary?.message}</p>
-            </label>
-            <label className="flex flex-col gap-1">
-              賞与額（1回あたり円）
-              <Controller
-                name="bonusAmount"
-                control={control}
-                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              賞与回数
-              <Controller
-                name="bonusCount"
-                control={control}
-                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
-              />
-            </label>
-          </>
-        )}
 
         <label className="flex flex-col gap-1">
           都道府県

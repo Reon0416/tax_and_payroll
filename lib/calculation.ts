@@ -40,47 +40,30 @@ export const normalizeIncome = (input: SimulationInput): NormalizedIncome => {
 
   if (input.mode === "annualIncome") {
     const annualGross = Math.max(0, input.annualIncome ?? 0);
-    const annualBonus = roundYen(annualGross * 0.2);
-    const annualSalary = Math.max(0, annualGross - annualBonus);
+    const annualBonus = 0;
+    const annualSalary = annualGross;
     return {
       annualGross,
       monthlyGross: annualGross / 12,
       annualBonus,
       annualSalary,
       annualCommutingAllowance,
-      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance) + annualBonus,
+      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance),
     };
   }
 
-  if (input.mode === "monthlyIncome") {
-    const monthlyGross = Math.max(0, input.monthlyIncome ?? 0);
-    const annualGross = monthlyGross * 12;
-    const annualBonus = 0;
-    const annualSalary = annualGross;
-    return {
-      annualGross,
-      monthlyGross,
-      annualBonus,
-      annualSalary,
-      annualCommutingAllowance,
-      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance) + annualBonus,
-    };
-  }
-
-  const monthlyBaseSalary = Math.max(0, input.monthlyBaseSalary ?? 0);
-  const bonusAmount = Math.max(0, input.bonusAmount ?? 0);
-  const bonusCount = Math.max(0, input.bonusCount ?? 0);
-  const annualBonus = bonusAmount * bonusCount;
-  const annualSalary = monthlyBaseSalary * 12;
-  const annualGross = annualSalary + annualBonus;
+  const monthlyGross = Math.max(0, input.monthlyIncome ?? 0);
+  const annualGross = monthlyGross * 12;
+  const annualBonus = 0;
+  const annualSalary = annualGross;
 
   return {
     annualGross,
-    monthlyGross: annualGross / 12,
+    monthlyGross,
     annualBonus,
     annualSalary,
     annualCommutingAllowance,
-    taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance) + annualBonus,
+    taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance),
   };
 };
 
@@ -186,15 +169,13 @@ export const simulateTakeHome = (input: SimulationInput): SimulationResult => {
   };
 
   const annualTakeHome = Math.max(0, roundYen(income.annualGross - deductions.totalDeductions));
-  const monthlyTakeHome = roundYen((annualTakeHome - (income.annualBonus / Math.max(1, input.bonusCount ?? 1))) / 12);
-  const bonusTakeHome = roundYen(input.bonusCount ? income.annualBonus / input.bonusCount : 0);
+  const monthlyTakeHome = roundYen(annualTakeHome / 12);
 
   return {
     annualGross: roundYen(income.annualGross),
     annualTakeHome,
     monthlyGross: roundYen(income.monthlyGross),
     monthlyTakeHome,
-    bonusTakeHome,
     gapFromGross: roundYen(income.annualGross - annualTakeHome),
     takeHomeRate: income.annualGross > 0 ? annualTakeHome / income.annualGross : 0,
     deductionRate: income.annualGross > 0 ? deductions.totalDeductions / income.annualGross : 0,
