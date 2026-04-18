@@ -41,6 +41,7 @@ export type SimulationResult = {
   monthlyTakeHome: number;
   bonusTakeHome: number;
   takeHomeRate: number;
+  deductionRate: number;
   gapFromGross: number;
   deductions: DeductionBreakdown;
   notes: string[];

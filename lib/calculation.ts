@@ -48,7 +48,7 @@ export const normalizeIncome = (input: SimulationInput): NormalizedIncome => {
       annualBonus,
       annualSalary,
       annualCommutingAllowance,
-      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance),
+      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance) + annualBonus,
     };
   }
 
@@ -63,7 +63,7 @@ export const normalizeIncome = (input: SimulationInput): NormalizedIncome => {
       annualBonus,
       annualSalary,
       annualCommutingAllowance,
-      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance),
+      taxableAnnualIncomeBase: Math.max(0, annualSalary - annualCommutingAllowance) + annualBonus,
     };
   }
 
@@ -102,11 +102,33 @@ export const calculatePension = (income: NormalizedIncome) => {
   return roundYen(income.annualGross * DEFAULT_RATES.pensionRate * DEFAULT_RATES.pensionEmployeeShare);
 };
 
+/**
+ * 所得税は超過累進課税で計算する。
+ * 速算表（税率/控除額）と同値だが、段階ごとの税額を積み上げることで
+ * ロジックを明示し、制度説明しやすくする。
+ */
 const calculateIncomeTaxRaw = (taxableIncome: number): number => {
-  const bracket = INCOME_TAX_BRACKETS.find((item) => taxableIncome <= item.upTo);
-  if (!bracket) return 0;
-  const tax = taxableIncome * bracket.rate - bracket.deduction;
-  return Math.max(0, tax);
+  if (taxableIncome <= 0) return 0;
+
+  let lowerBound = 0;
+  let totalTax = 0;
+
+  for (const bracket of INCOME_TAX_BRACKETS) {
+    const upperBound = bracket.upTo;
+    const taxableInBracket = Math.max(0, Math.min(taxableIncome, upperBound) - lowerBound);
+
+    if (taxableInBracket > 0) {
+      totalTax += taxableInBracket * bracket.rate;
+    }
+
+    if (taxableIncome <= upperBound) {
+      break;
+    }
+
+    lowerBound = upperBound;
+  }
+
+  return Math.max(0, totalTax);
 };
 
 export const simulateTakeHome = (input: SimulationInput): SimulationResult => {
@@ -175,6 +197,7 @@ export const simulateTakeHome = (input: SimulationInput): SimulationResult => {
     bonusTakeHome,
     gapFromGross: roundYen(income.annualGross - annualTakeHome),
     takeHomeRate: income.annualGross > 0 ? annualTakeHome / income.annualGross : 0,
+    deductionRate: income.annualGross > 0 ? deductions.totalDeductions / income.annualGross : 0,
     deductions,
     notes,
     taxableIncomeForIncomeTax,
