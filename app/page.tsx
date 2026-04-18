@@ -15,7 +15,7 @@ const createDefaultCase = (id: string, name: string): SimulationCase => ({
   name,
   input: {
     mode: "annualIncome",
-    annualIncome: 5000000,
+    annualIncome: undefined,
     monthlyIncome: 0,
     monthlyBaseSalary: 300000,
     bonusAmount: 600000,

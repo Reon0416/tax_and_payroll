@@ -13,6 +13,7 @@ type Props = {
 };
 
 const numberParser = (v: string) => (v === "" ? 0 : Number(v));
+const numberOrUndefinedParser = (v: string) => (v === "" ? undefined : Number(v));
 
 export default function SimulationForm({ activeCase, onChange }: Props) {
   const { control, watch, formState } = useForm<SimulationInputForm>({
@@ -58,7 +59,18 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
             <Controller
               name="annualIncome"
               control={control}
-              render={({ field }) => <input type="number" value={field.value ?? 0} onChange={(e) => field.onChange(numberParser(e.target.value))} />}
+              render={({ field }) => (
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="例: 5000000"
+                  value={field.value === undefined ? "" : String(field.value)}
+                  onChange={(e) => {
+                    const digitsOnly = e.target.value.replace(/[^\d]/g, "");
+                    field.onChange(digitsOnly === "" ? undefined : Number(digitsOnly));
+                  }}
+                />
+              )}
             />
             <p className="text-xs text-red-600">{formState.errors.annualIncome?.message}</p>
           </label>
@@ -70,7 +82,7 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
             <Controller
               name="monthlyIncome"
               control={control}
-              render={({ field }) => <input type="number" value={field.value ?? 0} onChange={(e) => field.onChange(numberParser(e.target.value))} />}
+              render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
             />
             <p className="text-xs text-red-600">{formState.errors.monthlyIncome?.message}</p>
           </label>
@@ -83,7 +95,7 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
               <Controller
                 name="monthlyBaseSalary"
                 control={control}
-                render={({ field }) => <input type="number" value={field.value ?? 0} onChange={(e) => field.onChange(numberParser(e.target.value))} />}
+                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
               />
               <p className="text-xs text-red-600">{formState.errors.monthlyBaseSalary?.message}</p>
             </label>
@@ -92,7 +104,7 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
               <Controller
                 name="bonusAmount"
                 control={control}
-                render={({ field }) => <input type="number" value={field.value ?? 0} onChange={(e) => field.onChange(numberParser(e.target.value))} />}
+                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -100,7 +112,7 @@ export default function SimulationForm({ activeCase, onChange }: Props) {
               <Controller
                 name="bonusCount"
                 control={control}
-                render={({ field }) => <input type="number" value={field.value ?? 0} onChange={(e) => field.onChange(numberParser(e.target.value))} />}
+                render={({ field }) => <input type="number" value={field.value ?? ""} onChange={(e) => field.onChange(numberOrUndefinedParser(e.target.value))} />}
               />
             </label>
           </>
